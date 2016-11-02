@@ -36,9 +36,10 @@ describe("webpack-vulcanize-loader", function () {
     });
 
     it("should emit vulcanized file", function () {
-        expect(/^<html>.*<\/html>$/g.test(emittedFiles["loader.html"])).to.equal(true);
+        expect(emittedFiles["loader.html"]).to.match(/^<html>/g);
         expect(emittedFiles["loader.html"]).to.contain('id="component"');
         expect(emittedFiles["loader.html"]).to.contain('id="component2"');
+        expect(emittedFiles["loader.html"]).to.match(/<\/html>$/g);
     });
 
     it("should emit asset dependencies", function () {
