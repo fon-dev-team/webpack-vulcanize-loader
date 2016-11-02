@@ -1,0 +1,28 @@
+{
+  "name": "webpack-vulcanize-loader",
+  "version": "0.0.0",
+  "description": "Webpack Polymer Vulcanization loader",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "keywords": [
+    "webpack",
+    "polymer",
+    "vulcanize",
+    "loader"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "loader-utils": "^0.2.16",
+    "vulcanize": "^1.14.8"
+  }
+}
