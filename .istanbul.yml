@@ -1,0 +1,30 @@
+verbose: false
+instrumentation:
+    root: .
+    excludes: ["test"]
+reporting:
+    print: summary
+    reports:
+        - lcov
+        - cobertura
+    dir: ./reports
+    watermarks:
+        statements: [50, 80]
+        lines: [50, 80]
+        functions: [50, 80]
+        branches: [50, 80]
+    report-config:
+        cobertura: {file: coverage.xml}
+check:
+    global:
+        statements: 90
+        lines: 90
+        branches: 85
+        functions: 0
+        excludes: []
+    each:
+        statements: 90
+        lines: 90
+        branches: 85
+        functions: 0
+        excludes: []

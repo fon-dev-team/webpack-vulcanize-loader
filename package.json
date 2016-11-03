@@ -7,7 +7,9 @@
     "index.js"
   ],
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "istanbul cover _mocha -- -R mocha-junit-reporter --reporter-options mochaFile=../reports/tests.xml",
+    "test:watch": "mocha -R spec -w",
+    "preversion": "npm run test && istanbul check-coverage"
   },
   "keywords": [
     "webpack",
@@ -19,7 +21,9 @@
   "license": "ISC",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.1.2"
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.2",
+    "mocha-junit-reporter": "^1.12.1"
   },
   "dependencies": {
     "loader-utils": "^0.2.16",

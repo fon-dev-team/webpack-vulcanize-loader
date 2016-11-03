@@ -5,11 +5,14 @@ var Vulcanize = require('vulcanize');
 
 
 module.exports = function () {
+
+    if (!this.emitFile) throw new Error("emitFile is required for vulcanizing");
+
     var loader = this;
     var query = loaderUtils.parseQuery(this.query);
-    var callback = this.async();
-
     this.cacheable && this.cacheable();
+
+    var callback = this.async();
 
     function processVulcanizedStyles(content) {
         var assets = {};
