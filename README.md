@@ -30,7 +30,7 @@ This package exposes a Webpack loader to generate vulcanized html imports and it
 
 3. Add the loader to your webpack.config.json and exclude your main html loader and index from html plugin
 
-``` json
+``` javascript
 
 {
     ...
