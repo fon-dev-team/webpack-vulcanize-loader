@@ -30,9 +30,9 @@ describe("webpack-vulcanize-loader", function () {
             expect(emittedFiles["loader.html"]).to.match(/<\/html>$/g);
         });
 
-        it("should emit asset dependencies", function () {
-            expect(emittedFiles['assets/logo.png']).to.be.definded;
-            expect(emittedFiles['assets/background.png']).to.be.definded;
+        it("should not emit asset dependencies", function () {
+            expect(emittedFiles['assets/logo.png']).not.to.be.undefined;
+            expect(emittedFiles['assets/background.png']).not.to.be.undefined;
         });
 
         it("should not output style urls", function () {
@@ -96,7 +96,7 @@ describe("webpack-vulcanize-loader", function () {
         });
 
         it('should throw error', function () {
-            expect(err).to.be.defined;
+            expect(err).not.to.be.undefined;
         })
     });
 
@@ -119,7 +119,7 @@ describe("webpack-vulcanize-loader", function () {
 
         it('should not add dependencies', function () {
             expect(Object.keys(emittedFiles).length).to.equal(1);
-            expect(emittedFiles['no-styles.html']).to.be.defined;
+            expect(emittedFiles['no-styles.html']).not.to.be.undefined;
         });
     });
 
@@ -142,7 +142,45 @@ describe("webpack-vulcanize-loader", function () {
 
         it('should not add dependencies', function () {
             expect(Object.keys(emittedFiles).length).to.equal(1);
-            expect(emittedFiles['no-urls.html']).to.be.defined;
+            expect(emittedFiles['no-urls.html']).not.to.be.undefined;
+        });
+    });
+
+    describe('when valid file supplied', function () {
+        executeLoader('fixtures/with-comments.html', '?inlineCss&inlineScripts&stripExcludes&stripComments');
+
+        it("should not throw error", function () {
+            expect(err).to.equal(null);
+        });
+
+        it("should generate a module dependency", function () {
+            expect(content).to.equal('module.exports = __webpack_public_path__ + "with-comments.html";');
+        });
+
+        it("should emit vulcanized file", function () {
+            expect(emittedFiles["with-comments.html"]).to.match(/^<html>/g);
+            expect(emittedFiles["with-comments.html"]).to.contain('id="component"');
+            expect(emittedFiles["with-comments.html"]).to.contain('id="component2"');
+            expect(emittedFiles["with-comments.html"]).to.match(/<\/html>$/g);
+        });
+
+        it("should not emit asset dependencies", function () {
+            expect(emittedFiles['assets/logo.png']).to.be.undefined;
+            expect(emittedFiles['assets/background.png']).to.be.undefined;
+        });
+
+        it("should not output style urls", function () {
+            expect(emittedFiles["with-comments.html"]).to.contain('url("img/logo.png")');
+            expect(emittedFiles["with-comments.html"]).to.contain('url("img/background.png")');
+        });
+
+        it("should replace style urls to requires", function () {
+            expect(emittedFiles["with-comments.html"]).not.to.contain('url("assets/logo.png")');
+        });
+
+        it("should replace style urls to requires without remove queries", function () {
+            expect(emittedFiles["with-comments.html"]).not.to.contain('url("assets/logo.png?#iefix")');
+            expect(emittedFiles["with-comments.html"]).not.to.contain('url("assets/logo.png#iefix")');
         });
     });
 
@@ -150,9 +188,10 @@ describe("webpack-vulcanize-loader", function () {
         process.chdir(path.resolve(__dirname, '..'));
     });
 
-    function executeLoader(resourcePath) {
+    function executeLoader(resourcePath, query) {
         beforeEach(function (done) {
             loader.call({
+                query: query,
                 resourcePath: resourcePath,
                 options: {
                     context: path.resolve(__dirname, 'fixtures')
