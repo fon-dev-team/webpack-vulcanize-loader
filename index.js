@@ -19,8 +19,8 @@ module.exports = function () {
 
         (content.match(/<style>[.\s\S]*?<\/style>/gm) || [])
             .forEach(function (style) {
+                style = style.replace(/(\/\/.*)|(\/\*[.*\s\S]*?\*\/)/g, '');
                 var parsed = style, assetUri, assetContent, interpolatedUri;
-
                 (style.match(/url\(".*?"\)/g) || []).forEach(function (assetUrl) {
                     assetUri = assetUrl.replace(/^.*?"/, '').replace(/(\??#.*)?".*$/, '');
 
@@ -53,13 +53,16 @@ module.exports = function () {
         return content;
     }
 
+    var processVulcanizedProps = function (query) {
+        return {
+            stripExcludes: query.stripExcludes || false,
+            inlineScripts: query.inlineScripts || false,
+            inlineCss: query.inlineCss || false,
+            stripComments: query.stripComments || false
+        };
+    };
 
-    new Vulcanize({
-        stripExcludes: true,
-        inlineScripts: true,
-        inlineCss: true,
-        stripComments: true
-    }).process(this.resourcePath, function (err, content) {
+    new Vulcanize(processVulcanizedProps(query)).process(this.resourcePath, function (err, content) {
         if (err) {
             callback(err);
             return;
