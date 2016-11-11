@@ -63,3 +63,7 @@ This package exposes a Webpack loader to generate vulcanized html imports and it
 
 **name:**: Generated vulcanized file name pattern
 **assetName:**: Generated asset file dependency name pattern (images, fonts, etc)
+**stripExcludes**: Exclude a subpath and remove any links referencing it. (default: false)
+**inlineScripts**: Inline external scripts. (default: false)
+**inlineCss**: Inline external stylesheets. (default: false)
+**stripComments**: Strips all HTML comments not containing an @license from the document. (default: false)
